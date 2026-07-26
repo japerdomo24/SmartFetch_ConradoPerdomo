@@ -48,5 +48,6 @@ export async function executeWithRetry<T>(
     }
   }
 
-  throw lastError;
+/* istanbul ignore next -- rama defensiva inalcanzable: el bucle lanza antes de salir */
+throw lastError;
 }
