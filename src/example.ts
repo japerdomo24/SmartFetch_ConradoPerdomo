@@ -1,4 +1,4 @@
-import { SmartFetch, SmartFetchError } from './src/index.js';
+import { SmartFetch, SmartFetchError } from './index.js';
 
 /**
  * Cliente principal de SmartFetch configurado con parámetros globales.
