@@ -16,6 +16,8 @@ export async function executeWithRetry<T>(
       lastError = error;
       if (attempt >= retries) {
         throw lastError;
+      }else{
+        console.log(` [Reintento ${attempt}/${retries - 1}] Fallo detectado. Reintentando...`);
       }
     }
   }
