@@ -181,12 +181,31 @@ async request<T>(url: string, options: RequestOptions = {}): Promise<T> {
 
 ## Ejemplos de Uso (`example.ts`)
 
-En la raíz del repositorio se encuentra el archivo **`example.ts`**, el cual demuestra la integración completa de la librería en un entorno TypeScript:
+El repositorio incluye un archivo **`example.ts`** en la raíz que demuestra de forma práctica las principales capacidades de **SmartFetch**:
+- Peticiones `GET`, `POST`, `PUT`, `PATCH` y `DELETE`.
+- Manejo de tiempos de espera (*timeouts*).
+- Reintentos automáticos (*retries*) ante fallos de servidor.
+- Intercepción de logs y métricas mediante aspectos AOP.
 
-```bash
-# Para ejecutar el archivo de ejemplo
-npm run start:example
-```
+### 🚀 Cómo ejecutar el ejemplo localmente
+
+Si estás evaluando o revisando el proyecto, sigue estos sencillos pasos para clonar el repositorio y ejecutar la demostración completa en tu terminal:
+
+1. **Clonar el repositorio:**
+   ```bash
+   git clone [https://github.com/japerdomo24/SmartFetch_ConradoPerdomo.git](https://github.com/japerdomo24/SmartFetch_ConradoPerdomo.git)
+   cd SmartFetch_ConradoPerdomo
+   ```
+
+2. **Instalar las dependencias:**
+   ```bash
+   npm install
+   ```
+
+3. **Ejecutar el script de ejemplo:**
+   ```bash
+   npm run start:example
+   ```
 
 ---
 
