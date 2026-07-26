@@ -21,6 +21,7 @@ Proporciona una interfaz limpia e intuitiva inspirada en Axios, eliminando los r
 - [Métodos HTTP](#métodos-http)
 - [Estructura de la Respuesta (HttpResponse)](#estructura-de-la-respuesta-httpresponse)
 - [Configuración Avanzada](#configuración-avanzada)
+  - [Uso de Encabezados (Headers)](#uso-de-encabezados-headers)
   - [Timeout Máximo de Espera](#timeout-máximo-de-espera)
   - [Reintentos Automáticos (Retries)](#reintentos-automáticos-retries)
 - [Arquitectura y Patrones](#arquitectura-y-patrones)
@@ -70,42 +71,41 @@ Una vez instalada la librería, si estás trabajando en un proyecto Node.js nuev
      }
    }
    ```
-   
+
 ---
 
 ## Uso Básico
 
 ### Con Async/Await
 
-```typescript
+```javascript
 import { SmartFetch } from 'smartfetch_conradoperdomo';
 
 const client = new SmartFetch({
-  baseURL: '[https://jsonplaceholder.typicode.com](https://jsonplaceholder.typicode.com)',
   timeout: 5000, // 5 segundos
   retries: 3     // 3 reintentos automáticos
 });
 
-async function obtenerUsuario() {
+async function obtenerProducto() {
   try {
-    const user = await client.get('/users/1');
-    console.log('Usuario:', user);
+    const producto = await client.get('https://dummyjson.com/products/1');
+    console.log('Producto:', producto);
   } catch (error) {
-    console.error('Error al obtener usuario:', error);
+    console.error('Error al obtener producto:', error.message);
   }
 }
 
-obtenerUsuario();
+obtenerProducto();
 ```
 
 ### Con Promesas (.then/.catch)
 
-```typescript
+```javascript
 import { SmartFetch } from 'smartfetch_conradoperdomo';
 
 const client = new SmartFetch();
 
-client.get('[https://jsonplaceholder.typicode.com/todos/1](https://jsonplaceholder.typicode.com/todos/1)')
+client.get('https://dummyjson.com/products/1')
   .then((data) => {
     console.log('Respuesta:', data);
   })
@@ -118,38 +118,39 @@ client.get('[https://jsonplaceholder.typicode.com/todos/1](https://jsonplacehold
 
 ## Métodos HTTP
 
-SmartFetch proporciona alias convenientes para los métodos HTTP más utilizados:
+SmartFetch proporciona alias convenientes para los métodos HTTP más utilizados pasando la URL de destino:
 
 ### `GET`
 ```typescript
-const data = await client.get<UserData>('/users/1');
+const data = await client.get<UserData>('https://dummyjson.com/users/1');
 ```
 
 ### `POST`
 ```typescript
-const newUser = await client.post<UserData>('/users', {
-  name: 'Jose Perdomo',
+const newUser = await client.post<UserData>('https://dummyjson.com/users/add', {
+  firstName: 'Jose',
+  lastName: 'Perdomo',
   email: 'jose@example.com'
 });
 ```
 
 ### `PUT`
 ```typescript
-const updatedUser = await client.put<UserData>('/users/1', {
-  name: 'Jose Perdomo Updated'
+const updatedUser = await client.put<UserData>('https://dummyjson.com/users/1', {
+  firstName: 'Jose Updated'
 });
 ```
 
 ### `PATCH`
 ```typescript
-const patchedUser = await client.patch<UserData>('/users/1', {
-  status: 'active'
+const patchedUser = await client.patch<UserData>('https://dummyjson.com/users/1)', {
+  age: 25
 });
 ```
 
 ### `DELETE`
 ```typescript
-const response = await client.delete('/users/1');
+const response = await client.delete('https://dummyjson.com/users/1');
 ```
 
 ---
@@ -175,7 +176,7 @@ import { SmartFetch, HttpResponse } from 'smartfetch_conradoperdomo';
 
 interface User {
   id: number;
-  name: string;
+  firstName: string;
   email: string;
 }
 
@@ -183,11 +184,11 @@ const client = new SmartFetch();
 
 async function obtenerUsuario() {
   // Recibimos el objeto de tipo HttpResponse<User>
-  const response: HttpResponse<User> = await client.get<User>('[https://jsonplaceholder.typicode.com/users/1](https://jsonplaceholder.typicode.com/users/1)');
+  const response: HttpResponse<User> = await client.get<User>('https://dummyjson.com/users/1');
 
   // 1. Acceso a los datos procesados (data)
   console.log('ID:', response.data.id);
-  console.log('Nombre:', response.data.name);
+  console.log('Nombre:', response.data.firstName);
 
   // 2. Acceso al código de estado (status)
   console.log('Código HTTP:', response.status); // ej: 200
@@ -211,11 +212,36 @@ obtenerUsuario();
 
 ## Configuración Avanzada
 
+### Uso de Encabezados (Headers)
+
+SmartFetch permite configurar encabezados globales en la instancia o personalizados por petición:
+
+```javascript
+// 1. Encabezados globales en la instancia
+const client = new SmartFetch({
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+});
+
+// 2. Encabezados específicos por petición
+const response = await client.post(
+  'https://dummyjson.com/products/add',
+  { title: 'Nuevo Producto' },
+  {
+    headers: {
+      'Authorization': 'Bearer token_secreto_123'
+    }
+  }
+);
+```
+
 ### Timeout Máximo de Espera
 
 Si el servidor no responde dentro del límite configurado, la petición se cancela automáticamente mediante `AbortController` y lanza un error controlado de tipo `SmartFetchError`.
 
-```typescript
+```javascript
 const client = new SmartFetch({
   timeout: 2000 // Cancela la petición si tarda más de 2000ms
 });
@@ -225,7 +251,7 @@ const client = new SmartFetch({
 
 Ante errores con códigos de estado HTTP `5xx` (Server Error) o fallos mecánicos de red, SmartFetch reintentará la comunicación automáticamente hasta el número de veces configurado antes de lanzar una excepción.
 
-```typescript
+```javascript
 const client = new SmartFetch({
   retries: 3 // Realiza hasta 3 reintentos si falla con 5xx/red
 });
@@ -252,6 +278,7 @@ async request<T>(url: string, options: RequestOptions = {}): Promise<T> {
   // Lógica principal de ejecución de Fetch
 }
 ```
+
 ---
 
 ## Ejemplos de Uso (`example.ts`)
@@ -268,7 +295,7 @@ Si estás evaluando o revisando el proyecto, sigue estos sencillos pasos para cl
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone [https://github.com/japerdomo24/SmartFetch_ConradoPerdomo.git](https://github.com/japerdomo24/SmartFetch_ConradoPerdomo.git)
+   git clone https://github.com/japerdomo24/SmartFetch_ConradoPerdomo.git
    cd SmartFetch_ConradoPerdomo
    ```
 
@@ -294,7 +321,7 @@ Si estás evaluando el repositorio, sigue estos pasos para correr los tests en t
 
 1. **Clonar el repositorio e instalar dependencias:**
    ```bash
-   git clone [https://github.com/japerdomo24/SmartFetch_ConradoPerdomo.git](https://github.com/japerdomo24/SmartFetch_ConradoPerdomo.git)
+   git clone https://github.com/japerdomo24/SmartFetch_ConradoPerdomo.git
    cd SmartFetch_ConradoPerdomo
    npm install
    ```
@@ -310,6 +337,7 @@ Si estás evaluando el repositorio, sigue estos pasos para correr los tests en t
    ```
 
 > **Nota:** El comando `npm run test:coverage` mostrará una tabla detallada en la consola con las métricas de código probado (Statements, Branches, Functions, Lines) y creará la carpeta `coverage/` con el reporte visual HTML (`coverage/lcov-report/index.html`).
+
 ---
 
 ## Integrantes del Equipo
