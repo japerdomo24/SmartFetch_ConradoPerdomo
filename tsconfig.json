@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    // Estructura de Salida
+    "rootDir": "./src",
+    "outDir": "./dist",
+
+    // Configuración de Entorno ESM
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "moduleDetection": "force",
+    
+    // Decoradores (Legacy / Experimental)
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    // Generación de Tipos (.d.ts) y Source Maps
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    // Verificación de Tipos Estricta
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": false,
+
+    // Opciones recomendadas
+    "isolatedModules": true,
+    "verbatimModuleSyntax": false,
+    "noUncheckedSideEffectImports": true,
+    "skipLibCheck": true,
+
+    "types": ["node", "jest"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "tests", "**/*.test.ts"]
+}
