@@ -16,7 +16,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "start:example": "npm run build && node dist/example.js",
+    "start:example": "tsc --rootDir . && node dist/example.js",
     "test": "jest"
   },
   "repository": {
