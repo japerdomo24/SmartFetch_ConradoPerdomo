@@ -51,6 +51,25 @@ Puedes instalar la librería desde el repositorio de GitHub:
 npm install github:japerdomo24/SmartFetch_ConradoPerdomo
 ```
 
+Una vez instalada la librería, si estás trabajando en un proyecto Node.js nuevo, debes asegurarte de tener un archivo `package.json` configurado con `"type": "module"` para permitir el uso de módulos ES (`import`/`export`):
+
+1. Inicializa tu proyecto (si aún no lo has hecho):
+   ```bash
+   npm init -y
+   ```
+
+2. Abre tu `package.json` y añade la propiedad `"type": "module"`:
+   ```json
+   {
+     "name": "mi-proyecto",
+     "version": "1.0.0",
+     "type": "module",
+     "dependencies": {
+       "smartfetch_conradoperdomo": "^1.0.0"
+     }
+   }
+   ```
+   
 ---
 
 ## Uso Básico
