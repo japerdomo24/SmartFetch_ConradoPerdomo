@@ -11,7 +11,8 @@
     "moduleResolution": "nodenext", 
     "exactOptionalPropertyTypes": false,
     "target": "esnext",
-    "types": [],
+    "experimentalDecorators": true,
+    "types": ["node", "jest"],
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
