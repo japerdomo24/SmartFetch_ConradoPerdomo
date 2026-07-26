@@ -16,6 +16,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "prepare": "npm run build",
     "start:example": "npm run build && node dist/example.js",
     "test": "jest"
   },
