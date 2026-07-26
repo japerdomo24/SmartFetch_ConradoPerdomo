@@ -1,0 +1,33 @@
+{
+  "name": "smartfetch_conradoperdomo",
+  "version": "1.0.0",
+  "description": "Proyecto de Tópicos Especiales de Programación",
+  "type": "module",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/japerdomo24/SmartFetch_ConradoPerdomo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/japerdomo24/SmartFetch_ConradoPerdomo/issues"
+  },
+  "homepage": "https://github.com/japerdomo24/SmartFetch_ConradoPerdomo#readme",
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^26.1.1",
+    "jest": "^30.4.2",
+    "ts-jest": "^29.4.12",
+    "typescript": "^7.0.2"
+  }
+}
