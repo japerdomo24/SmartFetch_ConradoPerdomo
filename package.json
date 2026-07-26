@@ -8,6 +8,12 @@
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/src/index.js",
+      "types": "./dist/src/index.d.ts"
+    }
+  },
   "scripts": {
     "build": "tsc",
     "start:example": "npm run build && node dist/example.js",
