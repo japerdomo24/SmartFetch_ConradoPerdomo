@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     // Estructura de Salida
-    //"rootDir": "./src",
+    "rootDir": "./src",
     "outDir": "./dist",
 
     // Configuración de Entorno ESM
