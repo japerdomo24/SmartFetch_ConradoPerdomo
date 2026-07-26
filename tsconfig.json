@@ -1,49 +1,37 @@
 {
-  // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
-    // File Layout
+    // Estructura de Salida
     //"rootDir": "./src",
     "outDir": "./dist",
 
-    // Environment Settings
-    // See also https://aka.ms/tsconfig/module
-    "module": "nodenext",
-    "moduleResolution": "nodenext", 
-    "exactOptionalPropertyTypes": false,
-    "target": "esnext",
+    // Configuración de Entorno ESM
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "moduleDetection": "force",
+    
+    // Decoradores (Legacy / Experimental)
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "types": ["node", "jest"],
-    // For nodejs:
-    // "lib": ["esnext"],
-    // "types": ["node"],
-    // and npm install -D @types/node
 
-    // Other Outputs
+    // Generación de Tipos (.d.ts) y Source Maps
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
 
-    // Stricter Typechecking Options
-    "noUncheckedIndexedAccess": true,
-
-    // Style Options
-    // "noImplicitReturns": true,
-    // "noImplicitOverride": true,
-    // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
-    // "noFallthroughCasesInSwitch": true,
-    // "noPropertyAccessFromIndexSignature": true,
-
-    // Recommended Options
+    // Verificación de Tipos Estricta
     "strict": true,
-    "jsx": "react-jsx",
-    "verbatimModuleSyntax": false,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": false,
+
+    // Opciones recomendadas
     "isolatedModules": true,
+    "verbatimModuleSyntax": false,
     "noUncheckedSideEffectImports": true,
-    "moduleDetection": "force",
     "skipLibCheck": true,
+
+    "types": ["node"]
   },
-  "include": ["src/**/*", "example.ts"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "tests", "**/*.test.ts"]
 }

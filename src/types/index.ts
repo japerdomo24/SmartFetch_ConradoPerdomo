@@ -1,22 +1,67 @@
+/**
+ * Configuración personalizada utilizada por SmartFetch para realizar
+ * solicitudes HTTP.
+ *
+ * Extiende la configuración nativa de `RequestInit` de Fetch API,
+ * agregando opciones específicas para controlar comportamiento
+ * adicional como tiempos de espera y reintentos automáticos.
+ *
+ * @interface SmartFetchConfig
+ *
+ * @extends RequestInit
+ *
+ * @property {number} [timeout]
+ * Tiempo máximo de espera de una solicitud en milisegundos antes
+ * de generar un error por timeout.
+ *
+ * @property {number} [retries]
+ * Cantidad de intentos permitidos para repetir una solicitud
+ * cuando ocurre un fallo.
+ *
+ * @property {number} [retryDelay]
+ * Tiempo de espera en milisegundos entre cada intento de reintento.
+ */
 export interface SmartFetchConfig extends RequestInit {
-  timeout?: number; // Tiempo máximo en ms
-  retries?: number; // Número de reintentos (default: 1)
-  retryDelay?: number; // Tiempo de espera entre reintentos en ms
+  timeout?: number;
+  retries?: number;
+  retryDelay?: number;
 }
 
+
 /**
- * Representa la respuesta empaquetada que retorna SmartFetch.
- * @template T El tipo de datos que se espera en el cuerpo (data) de la respuesta.
+ * Representa la estructura estándar de respuesta procesada
+ * por SmartFetch.
+ *
+ * Encapsula la información principal obtenida de una petición HTTP,
+ * incluyendo los datos recibidos, estado de la respuesta y metadatos
+ * asociados.
+ *
+ * @template T
+ * Tipo de datos esperado dentro del campo `data`.
+ *
+ * @interface HttpResponse
+ *
+ * @property {T} data
+ * Contenido procesado de la respuesta, normalmente obtenido
+ * mediante la conversión de JSON.
+ *
+ * @property {number} status
+ * Código numérico del estado HTTP retornado por el servidor.
+ *
+ * @property {string} statusText
+ * Descripción textual asociada al código de estado HTTP.
+ *
+ * @property {boolean} ok
+ * Indica si la solicitud fue exitosa según la especificación
+ * de Fetch API (códigos HTTP entre 200 y 299).
+ *
+ * @property {Headers}
+ * Encabezados HTTP recibidos desde el servidor.
  */
 export interface HttpResponse<T = any> {
-  /** Datos de la respuesta parseados (usualmente JSON) */
   data: T;
-  /** Código de estado HTTP (ej. 200, 201, 404, 500) */
   status: number;
-  /** Texto asociado al estado HTTP (ej. "OK", "Created") */
   statusText: string;
-  /** Indica si la petición fue exitosa (status en el rango 200-299) */
   ok: boolean;
-  /** Encabezados devueltos por el servidor */
   headers: Headers;
 }
