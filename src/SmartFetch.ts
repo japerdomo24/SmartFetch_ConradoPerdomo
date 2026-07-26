@@ -1,14 +1,23 @@
-// src/SmartFetch.ts
 import type { SmartFetchConfig, HttpResponse } from './types/index.js';
 import { SmartFetchError } from './errors/SmartFetchError.js';
 import { createTimeoutSignal } from './utils/timeout.js';
 import { executeWithRetry } from './utils/retry.js';
+import { LogRequest } from './aspects/LogAspect.js';
+import { AuditMetrics, getMetricsReport, PerformanceMetrics } from './aspects/MetricsAspect.js';
+import { MeasureTime } from './aspects/MeasureTimeAspect.js';
 
 export class SmartFetch {
   private defaultConfig: SmartFetchConfig;
 
   constructor(defaultConfig: SmartFetchConfig = {}) {
     this.defaultConfig = { retries: 1, timeout: 5000, ...defaultConfig };
+  }
+
+  /**
+   * Obtiene el reporte acumulado de métricas de uso
+   */
+  getMetrics(): PerformanceMetrics {
+    return getMetricsReport();
   }
 
   /**
@@ -45,6 +54,9 @@ export class SmartFetch {
     return this.setHeader('Authorization', `Bearer ${token}`);
   }
 
+  @AuditMetrics()
+  @MeasureTime(1000)
+  @LogRequest()
   async request<T>(url: string, config: SmartFetchConfig = {}): Promise<HttpResponse<T>> {
     const mergedConfig = { ...this.defaultConfig, ...config };
     const { timeout, retries, ...fetchOptions } = mergedConfig;

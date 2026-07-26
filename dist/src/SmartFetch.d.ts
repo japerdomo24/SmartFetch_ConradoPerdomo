@@ -1,7 +1,12 @@
 import type { SmartFetchConfig, HttpResponse } from './types/index.js';
+import { PerformanceMetrics } from './aspects/MetricsAspect.js';
 export declare class SmartFetch {
     private defaultConfig;
     constructor(defaultConfig?: SmartFetchConfig);
+    /**
+     * Obtiene el reporte acumulado de métricas de uso
+     */
+    getMetrics(): PerformanceMetrics;
     /**
      * Actualiza el tiempo máximo de espera por defecto (en milisegundos).
      */

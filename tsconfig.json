@@ -12,6 +12,7 @@
     "exactOptionalPropertyTypes": false,
     "target": "esnext",
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "types": ["node", "jest"],
     // For nodejs:
     // "lib": ["esnext"],
