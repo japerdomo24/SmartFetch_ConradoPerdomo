@@ -19,6 +19,7 @@ Proporciona una interfaz limpia e intuitiva inspirada en Axios, eliminando los r
   - [Con Async/Await](#con-asyncawait)
   - [Con Promesas (.then/.catch)](#con-promesas-thencatch)
 - [Métodos HTTP](#métodos-http)
+- [Estructura de la Respuesta (HttpResponse)](#estructura-de-la-respuesta-httpresponse)
 - [Configuración Avanzada](#configuración-avanzada)
   - [Timeout Máximo de Espera](#timeout-máximo-de-espera)
   - [Reintentos Automáticos (Retries)](#reintentos-automáticos-retries)
@@ -149,6 +150,61 @@ const patchedUser = await client.patch<UserData>('/users/1', {
 ### `DELETE`
 ```typescript
 const response = await client.delete('/users/1');
+```
+
+---
+
+## Estructura de la Respuesta (`HttpResponse`)
+
+Todas las peticiones resueltas por **SmartFetch** devuelven un objeto estandarizado con la interfaz `HttpResponse<T>`, el cual envuelve la respuesta procesada del servidor:
+
+| Propiedad | Tipo | Descripción |
+| :--- | :--- | :--- |
+| **`data`** | `T` | Contenido procesado de la respuesta (usualmente objeto JSON). |
+| **`status`** | `number` | Código numérico del estado HTTP (ej. `200`, `201`, `404`). |
+| **`statusText`** | `string` | Descripción textual asociada al código de estado HTTP (ej. `"OK"`). |
+| **`ok`** | `boolean` | `true` si el código HTTP está entre 200 y 299. |
+| **`headers`** | `Headers` | Objeto `Headers` nativo con los encabezados recibidos. |
+
+---
+
+### 💻 Cómo acceder a cada propiedad en tu código
+
+```typescript
+import { SmartFetch, HttpResponse } from 'smartfetch_conradoperdomo';
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+const client = new SmartFetch();
+
+async function obtenerUsuario() {
+  // Recibimos el objeto de tipo HttpResponse<User>
+  const response: HttpResponse<User> = await client.get<User>('[https://jsonplaceholder.typicode.com/users/1](https://jsonplaceholder.typicode.com/users/1)');
+
+  // 1. Acceso a los datos procesados (data)
+  console.log('ID:', response.data.id);
+  console.log('Nombre:', response.data.name);
+
+  // 2. Acceso al código de estado (status)
+  console.log('Código HTTP:', response.status); // ej: 200
+
+  // 3. Acceso a la descripción del estado (statusText)
+  console.log('Mensaje de estado:', response.statusText); // ej: "OK"
+
+  // 4. Verificación de éxito (ok)
+  if (response.ok) {
+    console.log('Petición completada con éxito (rango 200-299)');
+  }
+
+  // 5. Acceso a los encabezados HTTP (headers)
+  console.log('Tipo de contenido:', response.headers.get('content-type'));
+}
+
+obtenerUsuario();
 ```
 
 ---
