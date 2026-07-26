@@ -79,16 +79,37 @@ async function runAllDemos() {
     handleError(err);
     }
 
+  // 7. Petición lenta (Sin pasarse del tiempo límite)
+  try {
+    console.log('\n7. Probando Profiler con petición lenta...');
+    // Hacemos una consulta a un endpoint que simula un retraso de 1200ms
+    await client.get('https://dummyjson.com/http/200?delay=1200');
+  } catch (err) {
+    handleError(err);
+  }
+
   console.log('\n======================================');
   console.log('     ¡TODAS LAS PRUEBAS FINALIZADAS!  ');
   console.log('======================================');
+
+  console.log('\n======================================');
+  console.log('    MÉTRICAS DE AUDITORÍA (AOP)       ');
+  console.log('======================================');
+
+  const { statusCodes, ...summary } = client.getMetrics();
+
+  console.log('\n Resumen de Rendimiento:');
+  console.table(summary);
+
+  console.log(' Desglose por Código de Estado HTTP:');
+  console.table(statusCodes);
 }
 
 function handleError(error: any) {
   if (error instanceof SmartFetchError) {
     console.error(' [SmartFetchError Capturado]:', error.message);
     console.error('   Status:', error.status ?? 'N/A');
-    console.error('   ¿Fue Timeout?:', error.isTimeout);
+    console.error('   Fue Timeout?:', error.isTimeout);
   } else {
     console.error(' [Error]:', error);
   }

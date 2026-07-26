@@ -1,10 +1,28 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 import { SmartFetchError } from './errors/SmartFetchError.js';
 import { createTimeoutSignal } from './utils/timeout.js';
 import { executeWithRetry } from './utils/retry.js';
+import { LogRequest } from './aspects/LogAspect.js';
+import { AuditMetrics, getMetricsReport } from './aspects/MetricsAspect.js';
+import { MeasureTime } from './aspects/MeasureTimeAspect.js';
 export class SmartFetch {
     defaultConfig;
     constructor(defaultConfig = {}) {
         this.defaultConfig = { retries: 1, timeout: 5000, ...defaultConfig };
+    }
+    /**
+     * Obtiene el reporte acumulado de métricas de uso
+     */
+    getMetrics() {
+        return getMetricsReport();
     }
     /**
      * Actualiza el tiempo máximo de espera por defecto (en milisegundos).
@@ -106,4 +124,12 @@ export class SmartFetch {
         return this.request(url, { ...config, method: 'DELETE' });
     }
 }
+__decorate([
+    AuditMetrics(),
+    MeasureTime(1000),
+    LogRequest(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], SmartFetch.prototype, "request", null);
 //# sourceMappingURL=SmartFetch.js.map
