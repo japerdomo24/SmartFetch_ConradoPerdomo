@@ -211,16 +211,30 @@ Si estás evaluando o revisando el proyecto, sigue estos sencillos pasos para cl
 
 ## Pruebas Automatizadas
 
-El proyecto cuenta con una suite completa de pruebas unitarias implementada con **Jest** y **SWC** para garantizar la cobertura del código y la resiliencia frente a errores.
+El proyecto cuenta con una suite completa de pruebas unitarias implementada con **Jest**, garantizando la estabilidad de las peticiones HTTP, el cumplimiento de los *timeouts*, la estrategia de reintentos (*retries*) y la intercepción de los aspectos AOP.
 
-```bash
-# Ejecutar la suite de pruebas unitarias
-npm test
+### 🚀 Cómo ejecutar las pruebas localmente
 
-# Ejecutar las pruebas con reporte de cobertura (Coverage)
-npm run test:coverage
-```
+Si estás evaluando el repositorio, sigue estos pasos para correr los tests en tu entorno local:
 
+1. **Clonar el repositorio e instalar dependencias:**
+   ```bash
+   git clone [https://github.com/japerdomo24/SmartFetch_ConradoPerdomo.git](https://github.com/japerdomo24/SmartFetch_ConradoPerdomo.git)
+   cd SmartFetch_ConradoPerdomo
+   npm install
+   ```
+
+2. **Ejecutar la suite de pruebas:**
+   ```bash
+   npm test
+   ```
+
+3. **Generar reporte de cobertura (Coverage):**
+   ```bash
+   npm run test:coverage
+   ```
+
+> **Nota:** El comando `npm run test:coverage` mostrará una tabla detallada en la consola con las métricas de código probado (Statements, Branches, Functions, Lines) y creará la carpeta `coverage/` con el reporte visual HTML (`coverage/lcov-report/index.html`).
 ---
 
 ## Integrantes del Equipo
